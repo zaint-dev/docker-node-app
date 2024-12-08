@@ -1,0 +1,32 @@
+services:
+  app:
+    build: .
+    container_name: my-nodejs-mongodb
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mongodb://db:27017/nodeapp
+    networks:
+      - unir
+  
+  db:
+    image: mongo:latest
+    container_name: my-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db
+    networks:
+      - unir
+
+networks:
+  unir:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
